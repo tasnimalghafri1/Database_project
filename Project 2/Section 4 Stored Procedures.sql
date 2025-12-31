@@ -1,4 +1,4 @@
-use [Library System]
+﻿use [Library System]
 
 -----------------------Project 2 ---------------------------------------
 ---------------Section 4: Stored Procedures-------------------------
@@ -147,7 +147,7 @@ BEGIN
     SET NOCOUNT ON;
 
     BEGIN TRY
--- 1?: Member basic information
+-- 1️: Member basic information
         SELECT
             Member_ID,
             Full_Name,
@@ -157,7 +157,7 @@ BEGIN
         FROM Member
         WHERE Member_ID = @MemberID;
 
--- 2?: Current loans (Issued or Overdue)
+-- 2️: Current loans (Issued or Overdue)
         SELECT 
             L.Loan_ID,
             B.Title AS Book_Title,
@@ -174,7 +174,7 @@ BEGIN
         WHERE L.Member_ID = @MemberID
           AND L.Status IN ('Issued', 'Overdue');
 
--- 3?: Loan history (including returned)
+-- 3️: Loan history (including returned)
         SELECT
             L.Loan_ID,
             B.Title AS Book_Title,
@@ -187,7 +187,7 @@ BEGIN
         WHERE L.Member_ID = @MemberID
         ORDER BY L.Loan_Date;
 
--- 4?: Total fines paid and pending fines
+-- 4️: Total fines paid and pending fines
         SELECT
             SUM(CASE WHEN P.Method != 'Pending' THEN P.Amount ELSE 0 END) AS Total_Fines_Paid,
             SUM(CASE WHEN P.Method = 'Pending' THEN P.Amount ELSE 0 END) AS Pending_Fines
@@ -195,7 +195,7 @@ BEGIN
         LEFT JOIN Payment P ON L.Loan_ID = P.Loan_ID
         WHERE L.Member_ID = @MemberID;
 
--- 5?: Reviews written by the member
+-- 5️: Reviews written by the member
         SELECT
             R.Review_ID,
             B.Title AS Book_Title,
@@ -227,7 +227,7 @@ BEGIN
     SET NOCOUNT ON;
 
     BEGIN TRY
--- 1?: Total loans issued in that month
+-- 1️: Total loans issued in that month
         SELECT COUNT(*) AS Total_Loans_Issued
         FROM Loan L
         JOIN Book B ON L.Book_ID = B.Book_ID
@@ -235,7 +235,7 @@ BEGIN
           AND MONTH(L.Loan_Date) = @Month
           AND YEAR(L.Loan_Date) = @Year;
 
--- 2?: Total books returned in that month
+-- 2️: Total books returned in that month
         SELECT COUNT(*) AS Total_Books_Returned
         FROM Loan L
         JOIN Book B ON L.Book_ID = B.Book_ID
@@ -244,7 +244,7 @@ BEGIN
           AND MONTH(L.Return_Date) = @Month
           AND YEAR(L.Return_Date) = @Year;
 
--- 3?: Total revenue collected in that month
+-- 3️: Total revenue collected in that month
         SELECT ISNULL(SUM(P.Amount),0) AS Total_Revenue
         FROM Payment P
         JOIN Loan L ON P.Loan_ID = L.Loan_ID
@@ -254,7 +254,7 @@ BEGIN
           AND YEAR(P.Payment_Date) = @Year
           AND P.Method != 'Pending';
 
--- 4?: Most borrowed genre
+-- 4️: Most borrowed genre
         SELECT TOP 1 B.Genre, COUNT(*) AS Times_Borrowed
         FROM Loan L
         JOIN Book B ON L.Book_ID = B.Book_ID
@@ -262,7 +262,7 @@ BEGIN
         GROUP BY B.Genre
         ORDER BY COUNT(*) DESC;
 
--- 5?: Top 3 most active members
+-- 5️: Top 3 most active members
         SELECT TOP 3 M.Member_ID, M.Full_Name, COUNT(*) AS Loans_Count
         FROM Loan L
         JOIN Book B ON L.Book_ID = B.Book_ID

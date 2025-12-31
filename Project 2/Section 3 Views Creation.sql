@@ -1,4 +1,4 @@
-use [Library System]
+﻿use [Library System]
 
 -----------------------Project 2 ---------------------------------------
 ---------------Section 3: Views Creation-------------------------
@@ -19,7 +19,7 @@ L.Status,
 CASE
 WHEN L.Status = 'Overdue' 
 THEN DATEDIFF(DAY, L.Due_Date, GETDATE()) --DATEDIFF() dynamically calculates: Days overdue if the loan is overdue / Days remaining until due if still issued
-ELSE DATEDIFF(DAY, GETDATE(), L.Due_Date)--Uses GETDATE() ? no hardcoded dates
+ELSE DATEDIFF(DAY, GETDATE(), L.Due_Date)--Uses GETDATE() → no hardcoded dates
 END AS Days_To_Due_Or_Overdue
 FROM Loan L ----Combines data from Loan, Member, and Book
 JOIN Member M ON L.Member_ID = M.Member_ID 
